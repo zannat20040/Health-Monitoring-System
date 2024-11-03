@@ -1,50 +1,36 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function UserHealthTrack() {
-  const [data, setData] = useState();
-  const [revdata, setRevData] = useState([]); // Initialize as an empty array
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); // Set loading to true before the request
-      try {
-        const response = await axios.get(
-          "https://health-monitoring-system-backend.vercel.app/api/get-data"
-        );
-
-        // Check if response.data exists and sort it
-        const sortedData = response.data
-          ? response.data.sort((a, b) => b.timestamp - a.timestamp)
-          : [];
-
-        const data = sortedData.length > 0 ? sortedData[0] : null;
-        setData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["my-health-data"],
+    queryFn: () =>
+      axios
+        .get("https://health-monitoring-system-backend.vercel.app/api/get-data")
+        .then((res) => res.data), // Return res.data here
+  });
 
   console.log(data);
+  const sortedData = data ? data.sort((a, b) => b.timestamp - a.timestamp) : [];
+  const my_data = sortedData?.length > 0 ? sortedData[0] : null;
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  console.log(my_data);
+  if (isLoading) return "Loading...";
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <div>
-      <h1 className="text-2xl font-bold  mb-8">Health Monitoring System</h1>
-      <div>
-        <p>Temperature: {data?.temperature} °F</p>
-        <p>Oxygen Level: {data?.oxygenLevel}</p>
-        <p>Blood Pressure: {data?.bloodPressure}</p>
-      </div>
+      <h1 className="text-2xl font-bold mb-8">Health Monitoring System</h1>
+      {my_data ? (
+        <div>
+          <p>Temperature: {my_data.temperature} °F</p>
+          <p>Oxygen Level: {my_data.oxygenLevel}</p>
+          <p>Blood Pressure: {my_data.bloodPressure}</p>
+        </div>
+      ) : (
+        <p>No data available</p>
+      )}
     </div>
   );
 }

@@ -10,6 +10,13 @@ import {
 } from "react-router-dom";
 import { SimpleRegistrationForm } from "./SimpleRegistrationForm.jsx";
 import UserHealthTrack from "./UserHealthTrack.jsx";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -24,6 +31,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </StrictMode>
 );
