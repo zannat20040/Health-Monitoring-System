@@ -5,6 +5,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 export function SimpleRegistrationForm() {
   return (
@@ -51,9 +52,11 @@ export function SimpleRegistrationForm() {
           />
         </div>
 
-        <Button className="mt-6" fullWidth>
-          Login
-        </Button>
+        <Link to='/my-health'>
+          <Button className="mt-6" fullWidth>
+            Login
+          </Button>
+        </Link>
       </form>
     </Card>
   );

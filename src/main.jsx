@@ -9,6 +9,7 @@ import {
   Link,
 } from "react-router-dom";
 import { SimpleRegistrationForm } from "./SimpleRegistrationForm.jsx";
+import UserHealthTrack from "./UserHealthTrack.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,8 +17,8 @@ const router = createBrowserRouter([
     element: <SimpleRegistrationForm />,
   },
   {
-    path: "about",
-    element: <div>About</div>,
+    path: "/my-health",
+    element: <UserHealthTrack />,
   },
 ]);
 
