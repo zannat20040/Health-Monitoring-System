@@ -1,22 +1,22 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthProvider/AuthProvider";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 
-export function SimpleRegistrationForm() {
+export default function SimpleRegistrationForm() {
   const { createWithPass, loading, setLoading } = useContext(AuthContext);
   const navigate = useNavigate(); // Hook for navigation after signup
 
   const handleSignup = async (e) => {
     e.preventDefault();
     const form = e.target; // Get the form
-    const username = form.username.value; // Get username
+    // const username = form.username.value; // Get username
     const email = form.email.value; // Get email
     const pass = form.pass.value; // Get password
 
     // Displaying the values in console (can be removed later)
-    console.log(username, email, pass);
+    console.log(email, pass);
 
     // Set loading state
     setLoading(true);
@@ -51,23 +51,6 @@ export function SimpleRegistrationForm() {
         onSubmit={handleSignup}
       >
         <div className="mb-1 flex flex-col gap-6">
-          <Typography
-            variant="h6"
-            color="blue-gray"
-            className="-mb-3 text-start"
-          >
-            Your Username
-          </Typography>
-          <Input
-            required
-            name="username"
-            size="lg"
-            placeholder="hms24"
-            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-            labelProps={{
-              className: "before:content-none after:content-none",
-            }}
-          />
           <Typography
             variant="h6"
             color="blue-gray"

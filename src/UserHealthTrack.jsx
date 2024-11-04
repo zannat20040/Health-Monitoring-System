@@ -7,13 +7,15 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function UserHealthTrack() {
-  const { signOutProfile } = useContext(AuthContext);
+  const { signOutProfile, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["my-health-data"],
     queryFn: () =>
-      axios.get("http://localhost:5000/api/get-data").then((res) => res.data),
+      axios
+        .get(`http://localhost:5000/api/healthdata/${user?.uid}`)
+        .then((res) => res.data),
     refetchInterval: 5000, // Refetch every 5 seconds
   });
 
@@ -30,7 +32,7 @@ export default function UserHealthTrack() {
 
   // Get the last data entry directly
   const latestData = data ? data[data.length - 1] : null;
-  console.log(latestData);
+  console.log(data);
 
   if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error.message;
@@ -38,7 +40,7 @@ export default function UserHealthTrack() {
   return (
     <div className="text-center mt-6">
       <h1 className="text-2xl font-bold mb-8">Health Monitoring System</h1>
-      <h1>Patient Id: {latestData?.userId}</h1>
+      <h1>Patient Id: {user?.uid}</h1>
       {latestData ? (
         <div>
           <p>Temperature: {latestData?.temperature} °F</p>

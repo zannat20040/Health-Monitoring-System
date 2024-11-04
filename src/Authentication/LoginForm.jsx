@@ -1,34 +1,52 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthProvider/AuthProvider";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import { getAuth } from "firebase/auth";
+import axios from "axios";
 
-export function LoginForm() {
+export default function LoginForm() {
   const { createWithPass, loading, setLoading } = useContext(AuthContext);
-  const navigate = useNavigate(); // Hook for navigation after signup
+  const navigate = useNavigate();
   const { loginWithPass } = useContext(AuthContext);
 
   const handleSignin = async (e) => {
     e.preventDefault();
-    const form = e.target; // Get the form
-    const email = form.email.value; // Get email
-    const pass = form.pass.value; // Get password
+    const form = e.target;
+    const email = form.email.value;
+    const pass = form.pass.value;
 
-    // Set loading state
     setLoading(true);
     try {
-      // Call createWithPass with username, email, and password
-      await loginWithPass(email, pass); // Adjust if necessary to include username if needed
-      toast.success("Login successful!"); // Show success message
-      navigate("/my-health"); // Redirect to the dashboard or any other route
+      await loginWithPass(email, pass);
+      // const auth = getAuth();
+      // const user = auth.currentUser;
+      // if (user) {
+      //   const uid = user.uid;
+      //   console.log(uid)
+      //   await sendUIDtoESP8266(uid);
+      // }
+      toast.success("Login successful!");
+      navigate("/my-health");
     } catch (error) {
-      toast.error(error.message); // Show error message
+      toast.error(error.message);
     } finally {
-      // Reset loading state
       setLoading(false);
     }
   };
+
+  // async function sendUIDtoESP8266(uid) {
+  //   console.log(uid);
+  //   const esp8266IP = "http://192.168.0.103"; // Replace with your ESP8266's IP address
+
+  //   try {
+  //     const response = await axios.post(`${esp8266IP}/storeUID`, { uid });
+  //     console.log("UID sent to ESP8266:", response.data);
+  //   } catch (error) {
+  //     console.error("Error sending UID to ESP8266:", error);
+  //   }
+  // }
 
   return (
     <Card
@@ -86,7 +104,7 @@ export function LoginForm() {
         </div>
 
         <Button type="submit" className="mt-6" fullWidth>
-          {loading ? "Loading..." : "Sign in"}{" "}
+          {loading ? "Loading..." : "Sign in"}
         </Button>
 
         <Link to="/">

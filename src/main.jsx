@@ -2,12 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { SimpleRegistrationForm } from "./SimpleRegistrationForm.jsx";
 import UserHealthTrack from "./UserHealthTrack.jsx";
-import { LoginForm } from "./LoginForm.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
 import { Toaster } from "react-hot-toast";
+import SimpleRegistrationForm from "./Authentication/SimpleRegistrationForm.jsx";
+import LoginForm from "./Authentication/LoginForm.jsx";
 
 const queryClient = new QueryClient();
 
