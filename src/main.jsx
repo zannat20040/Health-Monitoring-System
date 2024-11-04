@@ -1,20 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SimpleRegistrationForm } from "./SimpleRegistrationForm.jsx";
 import UserHealthTrack from "./UserHealthTrack.jsx";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { LoginForm } from "./LoginForm.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AuthProvider from "./AuthProvider/AuthProvider.jsx";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <SimpleRegistrationForm />,
+  },
+  {
+    path: "/signin",
+    element: <LoginForm />,
   },
   {
     path: "/my-health",
@@ -32,7 +29,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <Toaster />
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>
 );

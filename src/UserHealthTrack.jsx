@@ -1,36 +1,72 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Button } from "@material-tailwind/react";
+import { AuthContext } from "./AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function UserHealthTrack() {
+  const { signOutProfile } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["my-health-data"],
     queryFn: () =>
-      axios
-        .get("https://health-monitoring-system-backend.vercel.app/api/get-data")
-        .then((res) => res.data), // Return res.data here
+      axios.get("http://localhost:5000/api/get-data").then((res) => res.data),
+    refetchInterval: 5000, // Refetch every 5 seconds
   });
 
-  console.log(data);
-  const sortedData = data ? data.sort((a, b) => b.timestamp - a.timestamp) : [];
-  const my_data = sortedData?.length > 0 ? sortedData[0] : null;
+  const HandleLogout = () => {
+    signOutProfile()
+      .then(() => {
+        navigate("/");
+        toast("Logged out successfully!");
+      })
+      .catch((error) => {
+        toast(error.message);
+      });
+  };
 
-  console.log(my_data);
+  // Get the last data entry directly
+  const latestData = data ? data[data.length - 1] : null;
+  console.log(latestData);
+
   if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
+    <div className="text-center mt-6">
       <h1 className="text-2xl font-bold mb-8">Health Monitoring System</h1>
-      {my_data ? (
+      <h1>Patient Id: {latestData?.userId}</h1>
+      {latestData ? (
         <div>
-          <p>Temperature: {my_data.temperature} °F</p>
-          <p>Oxygen Level: {my_data.oxygenLevel}</p>
-          <p>Blood Pressure: {my_data.bloodPressure}</p>
+          <p>Temperature: {latestData?.temperature} °F</p>
+          <p>Oxygen Level: {latestData?.oxygenLevel}</p>
+          <p>Blood Pressure: {latestData?.bloodPressure}</p>
+          <div>
+            <p>
+              Body Temperature: {latestData?.pulseOximeter?.bodyTemperature} °F
+            </p>
+            <p>Device Battery: {latestData?.pulseOximeter?.deviceBattery}%</p>
+            <p>
+              Heart Rate Variability:{" "}
+              {latestData?.pulseOximeter?.heartRateVariability}
+            </p>
+            <p>Perfusion Index: {latestData?.pulseOximeter?.perfusionIndex}</p>
+            <p>Pulse Rate: {latestData?.pulseOximeter?.pulseRate}</p>
+            <p>
+              Respiration Rate: {latestData?.pulseOximeter?.respirationRate}
+            </p>
+            <p>Signal Quality: {latestData?.pulseOximeter?.signalQuality}</p>
+            <p>SpO2: {latestData?.pulseOximeter?.spo2}%</p>
+          </div>
         </div>
       ) : (
         <p>No data available</p>
       )}
+
+      <Button onClick={HandleLogout}>Logout</Button>
     </div>
   );
 }
