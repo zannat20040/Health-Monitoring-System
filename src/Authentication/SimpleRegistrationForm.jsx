@@ -1,12 +1,12 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 export default function SimpleRegistrationForm() {
   const { createWithPass, loading, setLoading } = useContext(AuthContext);
-  const navigate = useNavigate(); // Hook for navigation after signup
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -16,24 +16,22 @@ export default function SimpleRegistrationForm() {
 
     setLoading(true);
     try {
-      // Call createWithPass with username, email, and password
-      await createWithPass(email, pass); // Adjust if necessary to include username if needed
-      toast.success("Registration successful!"); // Show success message
-      navigate("/my-health"); // Redirect to the dashboard or any other route
+      await createWithPass(email, pass);
+      toast.success("Registration successful!");
+      navigate("/my-health");
     } catch (error) {
-      console.error("Registration error:", error); // Log the error
-      toast.error("Registration failed: " + error.message); // Show error message
+      console.error("Registration error:", error); 
+      toast.error("Registration failed: " + error.message); 
     } finally {
-      // Reset loading state
       setLoading(false);
     }
   };
 
   return (
-    <div className=" bg-indigo-50 h-screen  ">
-      <div className="grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
+    <div className=" bg-indigo-50 min-h-screen  ">
+      <div className="flex flex-col md:grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
         {/* Left side content */}
-        <div className="p-8 text-center w-2/3 mx-auto flex flex-col justify-center">
+        <div className="p-8 text-center w-full lg:w-2/3 mx-auto flex flex-col justify-center">
           <h1 className="text-[#614385]  text-3xl font-semibold tracking-tigh mb-2">
             HealthGuard
           </h1>
@@ -43,8 +41,8 @@ export default function SimpleRegistrationForm() {
             feature for timely healthcare interventions.
           </p>
           <p className="my-6 ">
-            If you don&apos;t already have an account click the button below to
-            create your account.
+            If you already have an account ,click the button below to simply
+            logged in.{" "}
           </p>
           <Link to="/">
             <Button className="bg-[#4B778E] w-full font-normal tracking-wider ">
@@ -59,7 +57,7 @@ export default function SimpleRegistrationForm() {
             </Button>
           </Link>
         </div>
-        <div className="bg-white p-8 h-screen flex flex-col justify-center ">
+        <div className="bg-white p-8 h-full w-full flex flex-col justify-center ">
           {/* Right side form */}
           <h2 className="text-[#614385]  text-3xl font-semibold tracking-tight">
             Create An Account

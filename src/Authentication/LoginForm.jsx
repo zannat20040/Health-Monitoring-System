@@ -1,10 +1,8 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
-import { getAuth } from "firebase/auth";
-import axios from "axios";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 export default function LoginForm() {
   const { createWithPass, loading, setLoading } = useContext(AuthContext);
@@ -31,9 +29,9 @@ export default function LoginForm() {
   };
 
   return (
-    <div className=" bg-indigo-50 h-screen  ">
-      <div className="grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
-        <div className="bg-white p-8 h-screen flex flex-col justify-center ">
+    <div className=" bg-indigo-50 min-h-screen  ">
+      <div className="flex flex-col-reverse md:grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
+        <div className="bg-white p-8 h-full w-full flex flex-col justify-center ">
           {/* Left side form */}
           <h2 className="text-[#614385]  text-3xl font-semibold tracking-tight">
             Sign Into Your Account
@@ -82,7 +80,7 @@ export default function LoginForm() {
           </form>
         </div>
         {/* Right side content */}
-        <div className="p-8 text-center  w-2/3 mx-auto flex flex-col justify-center">
+        <div className="p-8 text-center  w-full lg:w-2/3 mx-auto flex flex-col justify-center">
           <h1 className="text-[#614385]  text-3xl font-semibold tracking-tigh mb-2">
             HealthGuard
           </h1>
