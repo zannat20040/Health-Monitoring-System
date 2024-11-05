@@ -10,6 +10,7 @@ import LoginForm from "./Authentication/LoginForm.jsx";
 import UserHealthTrack from "./Users/UserHealthTrack.jsx";
 import DoctorsMonitor from "./Doctors/DoctorsMonitor.jsx";
 import UserLayout from "./Users/UserLayout.jsx";
+import HeathRecords from "./Users/HeathRecords.jsx";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: "records", // Changed to relative path
-        element: <UserHealthTrack />,
+        element: <HeathRecords />,
       },
     ],
   },

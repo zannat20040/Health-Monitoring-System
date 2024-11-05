@@ -22,7 +22,7 @@ const getRiskColor = (parameter, value) => {
         ? "text-yellow-500"
         : "text-green-500";
     case "bloodPressure":
-      return value > 140
+      return value < 90
         ? "text-red-500"
         : value > 120
         ? "text-yellow-500"
@@ -30,7 +30,7 @@ const getRiskColor = (parameter, value) => {
     case "heartRateVariability":
       return value < 20
         ? "text-red-500"
-        : value < 40
+        : value > 40
         ? "text-yellow-500"
         : "text-green-500";
     case "pulseRate":
@@ -61,118 +61,140 @@ export default function UserHealthTrack() {
 
   return (
     <div className="text-center mt-6 max-w-7xl mx-auto px-5">
-    <h1 className="text-2xl font-bold mb-8 text-violet capitalize">
-      Continuously monitor your health
-    </h1>
-    {latestData ? (
-      <div className="overflow-x-auto">
-        <table className="table lg:w-1/2 mx-auto">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Parameter</th>
-              <th className="text-center">Result</th>
-              <th className="text-center">Health Condition</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>
-                <CiTempHigh className="text-yellow-900 text-3xl" />
-              </th>
-              <td>Temperature</td>
-              <td className="text-center">{latestData?.temperature} °F</td>
-              <td
-                className={`${getRiskColor("temperature", latestData?.temperature)} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <SiOxygen className="text-green-700 text-xl" />
-              </th>
-              <td>Oxygen Level</td>
-              <td className="text-center">{latestData?.oxygenLevel}</td>
-              <td
-                className={`${getRiskColor("oxygenLevel", latestData?.oxygenLevel)} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <FaDroplet className="text-red-700 text-xl" />
-              </th>
-              <td>Blood Pressure</td>
-              <td className="text-center">{latestData?.bloodPressure}</td>
-              <td
-                className={`${getRiskColor("bloodPressure", latestData?.bloodPressure)} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <FaHeartbeat className="text-red-700 text-xl" />
-              </th>
-              <td>Heart Rate Variability</td>
-              <td className="text-center">{latestData?.pulseOximeter?.heartRateVariability}</td>
-              <td
-                className={`${getRiskColor(
-                  "heartRateVariability",
-                  latestData?.pulseOximeter?.heartRateVariability
-                )} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <IoIosPulse className="text-red-700 text-xl" />
-              </th>
-              <td>Pulse Rate</td>
-              <td className="text-center">{latestData?.pulseOximeter?.pulseRate}</td>
-              <td
-                className={`${getRiskColor("pulseRate", latestData?.pulseOximeter?.pulseRate)} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <RiLungsLine className="text-blue-300 text-xl" />
-              </th>
-              <td>Respiration Rate</td>
-              <td className="text-center">{latestData?.pulseOximeter?.respirationRate}</td>
-              <td
-                className={`${getRiskColor(
-                  "respirationRate",
-                  latestData?.pulseOximeter?.respirationRate
-                )} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <RiLungsLine className="text-yellow-900 text-xl" />
-              </th>
-              <td>SpO2</td>
-              <td className="text-center">{latestData?.pulseOximeter?.spo2}</td>
-              <td
-                className={`${getRiskColor("spo2", latestData?.pulseOximeter?.spo2)} text-center`}
-              >
-                ●
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    ) : (
-      <p>No data available</p>
-    )}
-  </div>
-  
+      <h1 className="text-2xl font-bold mb-8 text-violet capitalize">
+        Continuously monitor your health
+      </h1>
+      {latestData ? (
+        <div className="overflow-x-auto">
+          <table className="table lg:w-1/2 mx-auto">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Parameter</th>
+                <th className="text-center">Result</th>
+                <th className="text-center">Health Condition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>
+                  <CiTempHigh className="text-yellow-900 text-3xl" />
+                </th>
+                <td>Temperature</td>
+                <td className="text-center">{latestData?.temperature} °F</td>
+                <td
+                  className={`${getRiskColor(
+                    "temperature",
+                    latestData?.temperature
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <SiOxygen className="text-green-700 text-xl" />
+                </th>
+                <td>Oxygen Level</td>
+                <td className="text-center">{latestData?.oxygenLevel}</td>
+                <td
+                  className={`${getRiskColor(
+                    "oxygenLevel",
+                    latestData?.oxygenLevel
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <FaDroplet className="text-red-700 text-xl" />
+                </th>
+                <td>Blood Pressure</td>
+                <td className="text-center">{latestData?.bloodPressure}</td>
+                <td
+                  className={`${getRiskColor(
+                    "bloodPressure",
+                    latestData?.bloodPressure
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <FaHeartbeat className="text-red-700 text-xl" />
+                </th>
+                <td>Heart Rate Variability</td>
+                <td className="text-center">
+                  {latestData?.pulseOximeter?.heartRateVariability}
+                </td>
+                <td
+                  className={`${getRiskColor(
+                    "heartRateVariability",
+                    latestData?.pulseOximeter?.heartRateVariability
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <IoIosPulse className="text-red-700 text-xl" />
+                </th>
+                <td>Pulse Rate</td>
+                <td className="text-center">
+                  {latestData?.pulseOximeter?.pulseRate}
+                </td>
+                <td
+                  className={`${getRiskColor(
+                    "pulseRate",
+                    latestData?.pulseOximeter?.pulseRate
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <RiLungsLine className="text-blue-300 text-xl" />
+                </th>
+                <td>Respiration Rate</td>
+                <td className="text-center">
+                  {latestData?.pulseOximeter?.respirationRate}
+                </td>
+                <td
+                  className={`${getRiskColor(
+                    "respirationRate",
+                    latestData?.pulseOximeter?.respirationRate
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <RiLungsLine className="text-yellow-900 text-xl" />
+                </th>
+                <td>SpO2</td>
+                <td className="text-center">
+                  {latestData?.pulseOximeter?.spo2}
+                </td>
+                <td
+                  className={`${getRiskColor(
+                    "spo2",
+                    latestData?.pulseOximeter?.spo2
+                  )} text-center`}
+                >
+                  ●
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p>No data available</p>
+      )}
+    </div>
   );
 }
