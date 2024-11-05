@@ -9,6 +9,39 @@ import { FaHeartbeat } from "react-icons/fa";
 import { IoIosPulse } from "react-icons/io";
 import { RiLungsLine } from "react-icons/ri";
 
+// Helper function to determine risk level and color
+const getRiskColor = (parameter, value) => {
+  switch (parameter) {
+    case "temperature":
+      return value < 97 || value > 99 ? "text-red-500" : "text-green-500";
+    case "oxygenLevel":
+    case "spo2":
+      return value < 92
+        ? "text-red-500"
+        : value < 95
+        ? "text-yellow-500"
+        : "text-green-500";
+    case "bloodPressure":
+      return value > 140
+        ? "text-red-500"
+        : value > 120
+        ? "text-yellow-500"
+        : "text-green-500";
+    case "heartRateVariability":
+      return value < 20
+        ? "text-red-500"
+        : value < 40
+        ? "text-yellow-500"
+        : "text-green-500";
+    case "pulseRate":
+      return value < 60 || value > 100 ? "text-red-500" : "text-green-500";
+    case "respirationRate":
+      return value < 12 || value > 20 ? "text-red-500" : "text-green-500";
+    default:
+      return "text-gray-500";
+  }
+};
+
 export default function UserHealthTrack() {
   const { user } = useContext(AuthContext);
 
@@ -21,7 +54,6 @@ export default function UserHealthTrack() {
     refetchInterval: 5000, // Refetch every 5 seconds
   });
 
-  // Get the last data entry directly
   const latestData = data ? data[data.length - 1] : null;
 
   if (isLoading) return "Loading...";
@@ -29,134 +61,118 @@ export default function UserHealthTrack() {
 
   return (
     <div className="text-center mt-6 max-w-7xl mx-auto px-5">
-      <h1 className="text-2xl font-bold mb-8 text-violet capitalize">
-        Continously monitor your health
-      </h1>
-      {latestData ? (
-        <div className="overflow-x-auto">
-          <table className="table lg:w-1/2 mx-auto">
-            {/* head */}
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* temp */}
-              <tr>
-                <th className="flex justify-end">
-                  <CiTempHigh className="text-yellow-900 text-3xl " />
-                </th>
-                <td className="text-start">
-                  Temparature:
-                  <span className="font-normal">
-                    {latestData?.temperature} °F
-                  </span>{" "}
-                </td>
-              </tr>
-              {/* oxygen level */}
-              <tr>
-                <th className="flex justify-end">
-                  <SiOxygen className="text-green-700 text-xl " />
-                </th>
-                <td className="text-start">
-                  Oxygen Level:
-                  <span className="font-normal">
-                    {latestData?.oxygenLevel}
-                  </span>{" "}
-                </td>
-              </tr>
-              {/* bloodPressure */}
-              <tr>
-                <th className="flex justify-end">
-                  <FaDroplet className="text-red-700 text-xl " />
-                </th>
-                <td className="text-start">
-                  Blood Pressure:
-                  <span className="font-normal">
-                    {latestData?.bloodPressure}
-                  </span>{" "}
-                </td>
-              </tr>
-              {/* body temparature */}
-              <tr>
-                <th className="flex justify-end">
-                  <CiTempHigh className="text-yellow-900 text-3xl" />
-                </th>
-                <td className="text-start">
-                  Body Temperature:
-                  <span className="font-normal">
-                    {latestData?.pulseOximeter?.bodyTemperature} °F
-                  </span>{" "}
-                </td>
-              </tr>
-              {/* Heart Rate Variability */}
-              <tr>
-                <th className="flex justify-end">
-                  <FaHeartbeat className="text-red-700 text-xl" />
-                </th>
-                <td className="text-start">
-                  Heart Rate Variability:
-                  <span className="font-normal">
-                    {latestData?.pulseOximeter?.heartRateVariability}
-                  </span>{" "}
-                </td>
-              </tr>
-              {/* Perfusion */}
-              <tr>
-                <th className="flex justify-end">
-                  <IoIosPulse className="text-red-700 text-xl" />
-                </th>
-                <td className="text-start">
-                  Perfusion Index:
-                  <span className="font-normal">
-                    {latestData?.pulseOximeter?.perfusionIndex}
-                  </span>{" "}
-                </td>
-              </tr>
-              {/* pulseRate */}
-              <tr>
-                <th className="flex justify-end">
-                  <IoIosPulse className="text-red-700 text-xl" />
-                </th>
-                <td className="text-start">
-                  Pulse Rate:
-                  <span className="font-normal">
-                    {latestData?.pulseOximeter?.pulseRate}
-                  </span>
-                </td>
-              </tr>
-              {/*  Respiration Rate */}
-              <tr>
-                <th className="flex justify-end">
-                  <RiLungsLine className="text-blue-300 text-xl" />
-                </th>
-                <td className="text-start">
-                  Respiration Rate:
-                  <span className="font-normal">
-                    {latestData?.pulseOximeter?.respirationRate}
-                  </span>
-                </td>
-              </tr>
-              {/* SpO2 */}
-              <tr>
-                <th className="flex justify-end">
-                  <RiLungsLine className="text-yellow-900 text-xl" />
-                </th>
-                <td className="text-start">
-                  SpO2:
-                  <span className="font-normal">
-                    {latestData?.pulseOximeter?.spo2}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <p>No data available</p>
-      )}
-    </div>
+    <h1 className="text-2xl font-bold mb-8 text-violet capitalize">
+      Continuously monitor your health
+    </h1>
+    {latestData ? (
+      <div className="overflow-x-auto">
+        <table className="table lg:w-1/2 mx-auto">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Parameter</th>
+              <th className="text-center">Result</th>
+              <th className="text-center">Health Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>
+                <CiTempHigh className="text-yellow-900 text-3xl" />
+              </th>
+              <td>Temperature</td>
+              <td className="text-center">{latestData?.temperature} °F</td>
+              <td
+                className={`${getRiskColor("temperature", latestData?.temperature)} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <SiOxygen className="text-green-700 text-xl" />
+              </th>
+              <td>Oxygen Level</td>
+              <td className="text-center">{latestData?.oxygenLevel}</td>
+              <td
+                className={`${getRiskColor("oxygenLevel", latestData?.oxygenLevel)} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <FaDroplet className="text-red-700 text-xl" />
+              </th>
+              <td>Blood Pressure</td>
+              <td className="text-center">{latestData?.bloodPressure}</td>
+              <td
+                className={`${getRiskColor("bloodPressure", latestData?.bloodPressure)} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <FaHeartbeat className="text-red-700 text-xl" />
+              </th>
+              <td>Heart Rate Variability</td>
+              <td className="text-center">{latestData?.pulseOximeter?.heartRateVariability}</td>
+              <td
+                className={`${getRiskColor(
+                  "heartRateVariability",
+                  latestData?.pulseOximeter?.heartRateVariability
+                )} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <IoIosPulse className="text-red-700 text-xl" />
+              </th>
+              <td>Pulse Rate</td>
+              <td className="text-center">{latestData?.pulseOximeter?.pulseRate}</td>
+              <td
+                className={`${getRiskColor("pulseRate", latestData?.pulseOximeter?.pulseRate)} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <RiLungsLine className="text-blue-300 text-xl" />
+              </th>
+              <td>Respiration Rate</td>
+              <td className="text-center">{latestData?.pulseOximeter?.respirationRate}</td>
+              <td
+                className={`${getRiskColor(
+                  "respirationRate",
+                  latestData?.pulseOximeter?.respirationRate
+                )} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <RiLungsLine className="text-yellow-900 text-xl" />
+              </th>
+              <td>SpO2</td>
+              <td className="text-center">{latestData?.pulseOximeter?.spo2}</td>
+              <td
+                className={`${getRiskColor("spo2", latestData?.pulseOximeter?.spo2)} text-center`}
+              >
+                ●
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p>No data available</p>
+    )}
+  </div>
+  
   );
 }
