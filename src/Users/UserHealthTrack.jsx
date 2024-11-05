@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@material-tailwind/react";
-import { AuthContext } from "./AuthProvider/AuthProvider";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,6 @@ export default function UserHealthTrack() {
 
   // Get the last data entry directly
   const latestData = data ? data[data.length - 1] : null;
-  console.log(data);
 
   if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error.message;
