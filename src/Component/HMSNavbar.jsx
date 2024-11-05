@@ -33,7 +33,7 @@ export default function HMSNavbar() {
   }, []);
 
   const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul className="mt-2 pt-6 lg:pt-0 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Link to={"/user/my-health"}>
         <Typography
           variant="small"
@@ -59,7 +59,7 @@ export default function HMSNavbar() {
     <div className=" max-h-[768px] sticky top-0 left-0  z-10 ">
       <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between gap-5 text-blue-gray-900">
-          <Typography className="mr-4 cursor-pointer py-1.5 font-semibold text-violet">
+          <Typography className="sm:block hidden mr-4 cursor-pointer py-1.5 font-semibold text-violet">
             HealthGuard
           </Typography>
           <div className="flex items-center gap-4">
@@ -122,7 +122,7 @@ export default function HMSNavbar() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <MobileNav open={openNav} className="">
           {navList}
           <div className="flex items-center gap-x-1">
             <Button onClick={HandleLogout} className="bg-violet rounded font-normal">Logout</Button>
