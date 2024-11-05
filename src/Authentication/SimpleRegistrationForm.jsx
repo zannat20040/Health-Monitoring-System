@@ -18,7 +18,7 @@ export default function SimpleRegistrationForm() {
     try {
       await createWithPass(email, pass);
       toast.success("Registration successful!");
-      navigate("/my-health");
+      navigate("/user/my-health");
     } catch (error) {
       console.error("Registration error:", error); 
       toast.error("Registration failed: " + error.message); 
@@ -57,7 +57,7 @@ export default function SimpleRegistrationForm() {
             </Button>
           </Link>
         </div>
-        <div className="bg-white p-8 h-full w-full flex flex-col justify-center ">
+        <div className="bg-white p-8 md:min-h-screen w-full flex flex-col justify-center ">
           {/* Right side form */}
           <h2 className="text-[#614385]  text-3xl font-semibold tracking-tight">
             Create An Account
@@ -102,7 +102,7 @@ export default function SimpleRegistrationForm() {
               type="submit"
               className="bg-violet w-full font-normal tracking-wider "
             >
-              {loading ? "loading" : "Continue"}
+              {loading ? "loading...." : "Continue"}
             </Button>
           </form>
         </div>

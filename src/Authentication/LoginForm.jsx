@@ -20,7 +20,7 @@ export default function LoginForm() {
       await loginWithPass(email, pass);
 
       toast.success("Login successful!");
-      navigate("/my-health");
+      navigate("/user/my-health");
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -31,7 +31,7 @@ export default function LoginForm() {
   return (
     <div className=" bg-indigo-50 min-h-screen  ">
       <div className="flex flex-col-reverse md:grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
-        <div className="bg-white p-8 h-full w-full flex flex-col justify-center ">
+        <div className="bg-white p-8 md:min-h-screen  w-full flex flex-col justify-center ">
           {/* Left side form */}
           <h2 className="text-[#614385]  text-3xl font-semibold tracking-tight">
             Sign Into Your Account
@@ -75,7 +75,7 @@ export default function LoginForm() {
               type="submit"
               className="bg-violet w-full font-normal tracking-wider "
             >
-              {loading ? "loading" : "Continue"}
+              {loading ? "loading..." : "Continue"}
             </Button>
           </form>
         </div>

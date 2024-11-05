@@ -7,8 +7,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function UserHealthTrack() {
-  const { signOutProfile, user } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["my-health-data"],
@@ -18,17 +17,6 @@ export default function UserHealthTrack() {
         .then((res) => res.data),
     refetchInterval: 5000, // Refetch every 5 seconds
   });
-
-  const HandleLogout = () => {
-    signOutProfile()
-      .then(() => {
-        navigate("/");
-        toast("Logged out successfully!");
-      })
-      .catch((error) => {
-        toast(error.message);
-      });
-  };
 
   // Get the last data entry directly
   const latestData = data ? data[data.length - 1] : null;
@@ -66,8 +54,6 @@ export default function UserHealthTrack() {
       ) : (
         <p>No data available</p>
       )}
-
-      <Button onClick={HandleLogout}>Logout</Button>
     </div>
   );
 }

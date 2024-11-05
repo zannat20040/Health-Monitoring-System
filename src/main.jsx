@@ -9,6 +9,7 @@ import SimpleRegistrationForm from "./Authentication/SimpleRegistrationForm.jsx"
 import LoginForm from "./Authentication/LoginForm.jsx";
 import UserHealthTrack from "./Users/UserHealthTrack.jsx";
 import DoctorsMonitor from "./Doctors/DoctorsMonitor.jsx";
+import UserLayout from "./Users/UserLayout.jsx";
 
 const queryClient = new QueryClient();
 
@@ -22,8 +23,18 @@ const router = createBrowserRouter([
     element: <SimpleRegistrationForm />,
   },
   {
-    path: "/my-health",
-    element: <UserHealthTrack />,
+    path: "/user",
+    element: <UserLayout />,
+    children: [
+      {
+        path: "my-health", // Changed to relative path
+        element: <UserHealthTrack />,
+      },
+      {
+        path: "records", // Changed to relative path
+        element: <UserHealthTrack />,
+      },
+    ],
   },
   {
     path: "/doctors",
