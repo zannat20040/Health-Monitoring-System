@@ -14,24 +14,47 @@ import {
 } from "chart.js";
 
 // Register required components with Chart.js
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend
+);
 
 export default function HealthRecords() {
   const { user } = useContext(AuthContext);
 
   // Fetch health records
-  const { isLoading: healthDataLoading, error: healthDataError, data: healthData } = useQuery({
+  const {
+    isLoading: healthDataLoading,
+    error: healthDataError,
+    data: healthData,
+  } = useQuery({
     queryKey: ["my-health-data"],
     queryFn: () =>
-      axios.get(`http://localhost:5000/api/healthrecords/${user?.uid}?period=6months`).then((res) => res.data),
+      axios
+        .get(
+          `http://localhost:5000/api/healthrecords/${user?.uid}?period=6months`
+        )
+        .then((res) => res.data),
     refetchInterval: 5000,
   });
 
   // Fetch health conditions
-  const { isLoading: healthConditionLoading, error: healthConditionError, data: healthCondition } = useQuery({
+  const {
+    isLoading: healthConditionLoading,
+    error: healthConditionError,
+    data: healthCondition,
+  } = useQuery({
     queryKey: ["my-condition-data"],
     queryFn: () =>
-      axios.get(`http://localhost:5000/api/healthcondition/${user?.uid}?period=6months`).then((res) => res.data),
+      axios
+        .get(
+          `http://localhost:5000/api/healthcondition/${user?.uid}?period=6months`
+        )
+        .then((res) => res.data),
     refetchInterval: 5000,
   });
 
@@ -46,11 +69,11 @@ export default function HealthRecords() {
     return <div>No health records available.</div>;
   }
 
-//   const labels = healthCondition?.map((entry) => new Date(entry.timestamp).toLocaleTimeString());
-//   const healthStatusValues = healthCondition?.map((entry) => (entry.healthStatus === "Well" ? 1 : 0));
-
   const chartData = {
-    labels: Array.from({ length: healthData?.bloodPressure?.length }, (_, i) => `Entry ${i + 1}`),
+    labels: Array.from(
+      { length: healthData?.bloodPressure?.length },
+      (_, i) => `Entry ${i + 1}`
+    ),
     datasets: [
       {
         label: "Blood Pressure (mmHg)",
@@ -122,39 +145,9 @@ export default function HealthRecords() {
     },
   };
 
-//   const condition = {
-//     labels: labels,
-//     datasets: [
-//       {
-//         label: "Health Status",
-//         data: healthStatusValues,
-//         fill: false,
-//         borderColor: "green",
-//         tension: 0.1,
-//       },
-//     ],
-//   };
-
-//   const options = {
-//     scales: {
-//       y: {
-//         beginAtZero: true,
-//         ticks: {
-//           callback: function (value) {
-//             return value === 1 ? "Well" : "Not Well"; // Customize y-axis labels
-//           },
-//         },
-//       },
-//     },
-//   };
-
   return (
     <div className="text-center mt-6 max-w-7xl mx-auto px-5">
       <h2 className="mb-5 py-8">Records of Your Health</h2>
-      {/* <div>
-        <h2>Health Status Over Time</h2>
-        <Line data={condition} options={options} />
-      </div> */}
       <div className="min-w-7xl overflow-x-scroll">
         <Line data={chartData} options={chartOptions} />
       </div>

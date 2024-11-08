@@ -42,6 +42,33 @@ const getRiskColor = (parameter, value) => {
   }
 };
 
+// Function to determine health condition based on value
+const getHealthCondition = (parameter, value) => {
+  switch (parameter) {
+    case "temperature":
+      return value < 97 || value > 99 ? "Abnormal" : "Normal";
+    case "oxygenLevel":
+    case "spo2":
+      if (value < 92) return "Critical";
+      if (value < 95) return "Low";
+      return "Normal";
+    case "bloodPressure":
+      if (value < 90) return "Low Blood Pressure";
+      if (value > 120) return "High Blood Pressure";
+      return "Normal";
+    case "heartRateVariability":
+      if (value < 20) return "Very Low";
+      if (value > 40) return "Normal";
+      return "Low";
+    case "pulseRate":
+      return value < 60 || value > 100 ? "Abnormal" : "Normal";
+    case "respirationRate":
+      return value < 12 || value > 20 ? "Abnormal" : "Normal";
+    default:
+      return "Unknown";
+  }
+};
+
 export default function UserHealthTrack() {
   const { user } = useContext(AuthContext);
 
@@ -82,13 +109,8 @@ export default function UserHealthTrack() {
                 </th>
                 <td>Temperature</td>
                 <td className="text-center">{latestData?.temperature} °F</td>
-                <td
-                  className={`${getRiskColor(
-                    "temperature",
-                    latestData?.temperature
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("temperature", latestData?.temperature)} text-center`}>
+                  ● {getHealthCondition("temperature", latestData?.temperature)}
                 </td>
               </tr>
               <tr>
@@ -97,13 +119,8 @@ export default function UserHealthTrack() {
                 </th>
                 <td>Oxygen Level</td>
                 <td className="text-center">{latestData?.oxygenLevel}</td>
-                <td
-                  className={`${getRiskColor(
-                    "oxygenLevel",
-                    latestData?.oxygenLevel
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("oxygenLevel", latestData?.oxygenLevel)} text-center`}>
+                  ● {getHealthCondition("oxygenLevel", latestData?.oxygenLevel)}
                 </td>
               </tr>
               <tr>
@@ -112,13 +129,8 @@ export default function UserHealthTrack() {
                 </th>
                 <td>Blood Pressure</td>
                 <td className="text-center">{latestData?.bloodPressure}</td>
-                <td
-                  className={`${getRiskColor(
-                    "bloodPressure",
-                    latestData?.bloodPressure
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("bloodPressure", latestData?.bloodPressure)} text-center`}>
+                  ● {getHealthCondition("bloodPressure", latestData?.bloodPressure)}
                 </td>
               </tr>
               <tr>
@@ -129,13 +141,8 @@ export default function UserHealthTrack() {
                 <td className="text-center">
                   {latestData?.pulseOximeter?.heartRateVariability}
                 </td>
-                <td
-                  className={`${getRiskColor(
-                    "heartRateVariability",
-                    latestData?.pulseOximeter?.heartRateVariability
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("heartRateVariability", latestData?.pulseOximeter?.heartRateVariability)} text-center`}>
+                  ● {getHealthCondition("heartRateVariability", latestData?.pulseOximeter?.heartRateVariability)}
                 </td>
               </tr>
               <tr>
@@ -146,13 +153,8 @@ export default function UserHealthTrack() {
                 <td className="text-center">
                   {latestData?.pulseOximeter?.pulseRate}
                 </td>
-                <td
-                  className={`${getRiskColor(
-                    "pulseRate",
-                    latestData?.pulseOximeter?.pulseRate
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("pulseRate", latestData?.pulseOximeter?.pulseRate)} text-center`}>
+                  ● {getHealthCondition("pulseRate", latestData?.pulseOximeter?.pulseRate)}
                 </td>
               </tr>
               <tr>
@@ -163,13 +165,8 @@ export default function UserHealthTrack() {
                 <td className="text-center">
                   {latestData?.pulseOximeter?.respirationRate}
                 </td>
-                <td
-                  className={`${getRiskColor(
-                    "respirationRate",
-                    latestData?.pulseOximeter?.respirationRate
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("respirationRate", latestData?.pulseOximeter?.respirationRate)} text-center`}>
+                  ● {getHealthCondition("respirationRate", latestData?.pulseOximeter?.respirationRate)}
                 </td>
               </tr>
               <tr>
@@ -180,13 +177,8 @@ export default function UserHealthTrack() {
                 <td className="text-center">
                   {latestData?.pulseOximeter?.spo2}
                 </td>
-                <td
-                  className={`${getRiskColor(
-                    "spo2",
-                    latestData?.pulseOximeter?.spo2
-                  )} text-center`}
-                >
-                  ●
+                <td className={`${getRiskColor("spo2", latestData?.pulseOximeter?.spo2)} text-center`}>
+                  ● {getHealthCondition("spo2", latestData?.pulseOximeter?.spo2)}
                 </td>
               </tr>
             </tbody>

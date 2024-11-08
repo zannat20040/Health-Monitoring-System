@@ -29,11 +29,11 @@ export default function LoginForm() {
   };
 
   return (
-    <div className=" bg-indigo-50 min-h-screen  ">
+    <div className=" bg-primary min-h-screen  ">
       <div className="flex flex-col-reverse md:grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
         <div className="bg-white p-8 md:min-h-screen  w-full flex flex-col justify-center ">
           {/* Left side form */}
-          <h2 className="text-[#614385]  text-3xl font-semibold tracking-tight">
+          <h2 className="text-primary  text-3xl font-semibold tracking-tight">
             Sign Into Your Account
           </h2>
           <p className="text-gray-700 ">
@@ -45,12 +45,12 @@ export default function LoginForm() {
                 htmlFor="email"
                 className="font-medium text-sm tracking-wider"
               >
-                Your Email<span className="text-red-500"> *</span>
+                Your Email<span className="text-primary1"> *</span>
               </label>
               <input
                 name="email"
                 id="email"
-                className="flex border outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-violet dark:border-zinc-700 "
+                className="flex border-2 hover:border-primary border-transparent bg-gray-100 outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-primary dark:border-zinc-700 "
                 placeholder="Username"
                 type="email"
                 required
@@ -59,12 +59,12 @@ export default function LoginForm() {
                 htmlFor="pass"
                 className="font-medium text-sm tracking-wider mt-2"
               >
-                Your Password<span className="text-red-500"> *</span>
+                Your Password<span className="text-primary1"> *</span>
               </label>
               <input
                 id="pass"
                 name="pass"
-                className="flex border outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-violet dark:border-zinc-700 "
+                className="flex border-2 hover:border-primary border-transparent bg-gray-100 outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-primary dark:border-zinc-700 "
                 placeholder="pass"
                 type="pass"
                 required
@@ -73,7 +73,7 @@ export default function LoginForm() {
 
             <Button
               type="submit"
-              className="bg-violet w-full font-normal tracking-wider "
+              className="bg-primary w-full font-normal tracking-wider "
             >
               {loading ? "loading..." : "Continue"}
             </Button>
@@ -81,27 +81,27 @@ export default function LoginForm() {
         </div>
         {/* Right side content */}
         <div className="p-8 text-center  w-full lg:w-2/3 mx-auto flex flex-col justify-center">
-          <h1 className="text-[#614385]  text-3xl font-semibold tracking-tigh mb-2">
+          <h1 className="text-white  text-3xl font-semibold tracking-tigh mb-2">
             HealthGuard
           </h1>
-          <p className="">
+          <p className="text-white">
             Our Health Monitoring System tracks vital health metrics like
             temperature and blood pressure, with an integrated doctor monitoring
             feature for timely healthcare interventions.
           </p>
-          <p className="my-6 ">
+          <p className="my-6 text-white ">
             If you don&apos;t already have an account click the button below to
             create your account.
           </p>
           <Link to="/signup">
-            <Button className="bg-[#4B778E] w-full font-normal tracking-wider ">
+            <Button className="bg-primary4 w-full font-normal text-black tracking-wider ">
               Create Account
             </Button>
           </Link>
 
           <div className="divider">OR</div>
           <Link to="/doctors">
-            <Button className="bg-[#817e42] w-full font-normal tracking-wider ">
+            <Button className="bg-primary1 w-full font-normal tracking-wider ">
               Login as Doctor's Community
             </Button>
           </Link>
