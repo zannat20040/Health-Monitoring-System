@@ -8,6 +8,8 @@ import { FaDroplet } from "react-icons/fa6";
 import { FaHeartbeat } from "react-icons/fa";
 import { IoIosPulse } from "react-icons/io";
 import { RiLungsLine } from "react-icons/ri";
+import Loading from "../Component/Loading";
+import CustomError from "../Component/CustomError";
 
 // Helper function to determine risk level and color
 const getRiskColor = (parameter, value) => {
@@ -76,22 +78,22 @@ export default function UserHealthTrack() {
     queryKey: ["my-health-data"],
     queryFn: () =>
       axios
-        .get(`http://localhost:5000/api/healthdata/${user?.uid}`)
+        .get(`http://localhost:5000/api/healthdata/${user?.email}`)
         .then((res) => res.data),
     refetchInterval: 5000, // Refetch every 5 seconds
   });
 
-  const latestData = data ? data[data.length - 1] : null;
+  console.log(data);
 
-  if (isLoading) return "Loading...";
-  if (error) return "An error has occurred: " + error.message;
+  if (isLoading) return <Loading />;
+  if (error) return <CustomError errormsg={error.message} />;
 
   return (
     <div className="text-center mt-6 max-w-7xl mx-auto px-5">
-      <h1 className="text-2xl font-bold mb-8 text-violet capitalize">
-        Continuously monitor your health
+      <h1 className="text-2xl font-bold mb-8 text-primary capitalize">
+        Your Current Health Condition
       </h1>
-      {latestData ? (
+      {data ? (
         <div className="overflow-x-auto">
           <table className="table lg:w-1/2 mx-auto">
             <thead>
@@ -108,9 +110,14 @@ export default function UserHealthTrack() {
                   <CiTempHigh className="text-yellow-900 text-3xl" />
                 </th>
                 <td>Temperature</td>
-                <td className="text-center">{latestData?.temperature} °F</td>
-                <td className={`${getRiskColor("temperature", latestData?.temperature)} text-center`}>
-                  ● {getHealthCondition("temperature", latestData?.temperature)}
+                <td className="text-center">{data?.temperature} °F</td>
+                <td
+                  className={`${getRiskColor(
+                    "temperature",
+                    data?.temperature
+                  )} text-center`}
+                >
+                  ● {getHealthCondition("temperature", data?.temperature)}
                 </td>
               </tr>
               <tr>
@@ -118,9 +125,14 @@ export default function UserHealthTrack() {
                   <SiOxygen className="text-green-700 text-xl" />
                 </th>
                 <td>Oxygen Level</td>
-                <td className="text-center">{latestData?.oxygenLevel}</td>
-                <td className={`${getRiskColor("oxygenLevel", latestData?.oxygenLevel)} text-center`}>
-                  ● {getHealthCondition("oxygenLevel", latestData?.oxygenLevel)}
+                <td className="text-center">{data?.oxygenLevel}</td>
+                <td
+                  className={`${getRiskColor(
+                    "oxygenLevel",
+                    data?.oxygenLevel
+                  )} text-center`}
+                >
+                  ● {getHealthCondition("oxygenLevel", data?.oxygenLevel)}
                 </td>
               </tr>
               <tr>
@@ -128,12 +140,17 @@ export default function UserHealthTrack() {
                   <FaDroplet className="text-red-700 text-xl" />
                 </th>
                 <td>Blood Pressure</td>
-                <td className="text-center">{latestData?.bloodPressure}</td>
-                <td className={`${getRiskColor("bloodPressure", latestData?.bloodPressure)} text-center`}>
-                  ● {getHealthCondition("bloodPressure", latestData?.bloodPressure)}
+                <td className="text-center">{data?.bloodPressure}</td>
+                <td
+                  className={`${getRiskColor(
+                    "bloodPressure",
+                    data?.bloodPressure
+                  )} text-center`}
+                >
+                  ● {getHealthCondition("bloodPressure", data?.bloodPressure)}
                 </td>
               </tr>
-              <tr>
+              {/* <tr>
                 <th>
                   <FaHeartbeat className="text-red-700 text-xl" />
                 </th>
@@ -141,23 +158,35 @@ export default function UserHealthTrack() {
                 <td className="text-center">
                   {latestData?.pulseOximeter?.heartRateVariability}
                 </td>
-                <td className={`${getRiskColor("heartRateVariability", latestData?.pulseOximeter?.heartRateVariability)} text-center`}>
-                  ● {getHealthCondition("heartRateVariability", latestData?.pulseOximeter?.heartRateVariability)}
+                <td
+                  className={`${getRiskColor(
+                    "heartRateVariability",
+                    latestData?.pulseOximeter?.heartRateVariability
+                  )} text-center`}
+                >
+                  ●{" "}
+                  {getHealthCondition(
+                    "heartRateVariability",
+                    latestData?.pulseOximeter?.heartRateVariability
+                  )}
                 </td>
-              </tr>
+              </tr> */}
               <tr>
                 <th>
                   <IoIosPulse className="text-red-700 text-xl" />
                 </th>
                 <td>Pulse Rate</td>
-                <td className="text-center">
-                  {latestData?.pulseOximeter?.pulseRate}
-                </td>
-                <td className={`${getRiskColor("pulseRate", latestData?.pulseOximeter?.pulseRate)} text-center`}>
-                  ● {getHealthCondition("pulseRate", latestData?.pulseOximeter?.pulseRate)}
+                <td className="text-center">{data?.pulseRate}</td>
+                <td
+                  className={`${getRiskColor(
+                    "pulseRate",
+                    data?.pulseRate
+                  )} text-center`}
+                >
+                  ● {getHealthCondition("pulseRate", data?.pulseRate)}
                 </td>
               </tr>
-              <tr>
+              {/* <tr>
                 <th>
                   <RiLungsLine className="text-blue-300 text-xl" />
                 </th>
@@ -165,20 +194,32 @@ export default function UserHealthTrack() {
                 <td className="text-center">
                   {latestData?.pulseOximeter?.respirationRate}
                 </td>
-                <td className={`${getRiskColor("respirationRate", latestData?.pulseOximeter?.respirationRate)} text-center`}>
-                  ● {getHealthCondition("respirationRate", latestData?.pulseOximeter?.respirationRate)}
+                <td
+                  className={`${getRiskColor(
+                    "respirationRate",
+                    latestData?.pulseOximeter?.respirationRate
+                  )} text-center`}
+                >
+                  ●{" "}
+                  {getHealthCondition(
+                    "respirationRate",
+                    latestData?.pulseOximeter?.respirationRate
+                  )}
                 </td>
-              </tr>
+              </tr> */}
               <tr>
                 <th>
                   <RiLungsLine className="text-yellow-900 text-xl" />
                 </th>
                 <td>SpO2</td>
-                <td className="text-center">
-                  {latestData?.pulseOximeter?.spo2}
-                </td>
-                <td className={`${getRiskColor("spo2", latestData?.pulseOximeter?.spo2)} text-center`}>
-                  ● {getHealthCondition("spo2", latestData?.pulseOximeter?.spo2)}
+                <td className="text-center">{data?.spo2}%</td>
+                <td
+                  className={`${getRiskColor(
+                    "spo2",
+                    data?.pulseOximeter?.spo2
+                  )} text-center`}
+                >
+                  ● {getHealthCondition("spo2", data?.spo2)}
                 </td>
               </tr>
             </tbody>

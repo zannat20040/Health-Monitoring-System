@@ -38,7 +38,7 @@ export default function HMSNavbar() {
         <Typography
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal"
+          className="p-1 font-normal text-black hover:text-primary   duration-500"
         >
           My Current Health
         </Typography>
@@ -47,7 +47,7 @@ export default function HMSNavbar() {
         <Typography
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal"
+          className="p-1 font-normal text-black hover:text-primary   duration-500"
         >
           Health Records
         </Typography>
@@ -59,7 +59,7 @@ export default function HMSNavbar() {
     <div className=" max-h-[768px] sticky top-0 left-0  z-10 ">
       <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between gap-5 text-blue-gray-900">
-          <Typography className="sm:block hidden mr-4 cursor-pointer py-1.5 font-semibold text-violet">
+          <Typography className="sm:block hidden mr-4 cursor-pointer py-1.5 font-semibold text-primary">
             HealthGuard
           </Typography>
           <div className="flex items-center gap-4">
@@ -68,8 +68,8 @@ export default function HMSNavbar() {
           <div className="flex gap-2">
             <div className="flex gap-2 items-center justify-between">
               <div className="text-sm text-end">
-                <h1>Your UserID</h1>
-                <h1>{user?.uid}</h1>
+                <h1>Your DeviceId</h1>
+                <h1>{user?.email}</h1>
               </div>
               <div className="avatar">
                 <div className="w-10 rounded">
@@ -81,7 +81,12 @@ export default function HMSNavbar() {
               </div>
             </div>
             <div className="flex items-center gap-x-1">
-              <Button onClick={HandleLogout} className="hidden lg:inline-block bg-violet rounded  font-normal">Logout</Button>
+              <Button
+                onClick={HandleLogout}
+                className="hidden lg:inline-block bg-primary rounded  font-normal"
+              >
+                Logout
+              </Button>
             </div>
             <IconButton
               variant="text"
@@ -125,7 +130,12 @@ export default function HMSNavbar() {
         <MobileNav open={openNav} className="">
           {navList}
           <div className="flex items-center gap-x-1">
-            <Button onClick={HandleLogout} className="bg-violet rounded font-normal">Logout</Button>
+            <Button
+              onClick={HandleLogout}
+              className="bg-primary rounded font-normal"
+            >
+              Logout
+            </Button>
           </div>
         </MobileNav>
       </Navbar>
