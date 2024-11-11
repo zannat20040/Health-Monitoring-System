@@ -11,6 +11,7 @@ import UserHealthTrack from "./Users/UserHealthTrack.jsx";
 import DoctorsMonitor from "./Doctors/DoctorsMonitor.jsx";
 import UserLayout from "./Users/UserLayout.jsx";
 import HeathRecords from "./Users/HeathRecords.jsx";
+import DoctorsLogin from "./Authentication/DoctorsLogin.jsx";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <LoginForm />,
+  },
+  {
+    path: "/doctors",
+    element: <DoctorsLogin />,
   },
   {
     path: "/signup",
