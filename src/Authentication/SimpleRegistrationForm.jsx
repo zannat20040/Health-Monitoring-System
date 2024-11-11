@@ -94,7 +94,7 @@ export default function SimpleRegistrationForm() {
                 name="pass"
                 className="flex border-2 hover:border-primary border-transparent bg-gray-100 outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-primary dark:border-zinc-700 "
                 placeholder="pass"
-                type="pass"
+                type="password"
                 required
               />
             </div>

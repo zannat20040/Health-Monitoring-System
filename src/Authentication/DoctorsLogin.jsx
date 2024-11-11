@@ -1,26 +1,39 @@
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import axios from "axios"; // Import axios
 
 export default function DoctorsLogin() {
-  const { createWithPass, loading, setLoading } = useContext(AuthContext);
+  const { loginWithPass, loading, setLoading } = useContext(AuthContext); // Access login function and loading state
   const navigate = useNavigate();
-  const { loginWithPass } = useContext(AuthContext);
 
   const handleSignin = async (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const pass = form.pass.value;
+    const hospitalId = form.hospitalId.value;
 
     setLoading(true);
     try {
+      // Firebase Authentication
       await loginWithPass(email, pass);
-
       toast.success("Login successful!");
-      navigate("/user/my-health");
+
+      // Fetch additional data from API if login succeeds
+      const response = await axios.get(
+        `http://localhost:5000/api/get-all-data/${hospitalId}`
+      );
+
+      console.log(response);
+      if (response.status === 200 && response.data) {
+        // Navigate to the health data page after successful login and data fetch
+        navigate("/user/my-health", { state: { data: response.data } });
+      } else {
+        toast.error("Failed to fetch data from server.");
+      }
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -29,17 +42,16 @@ export default function DoctorsLogin() {
   };
 
   return (
-    <div className=" bg-primary min-h-screen  ">
-      <div className="flex flex-col-reverse md:grid grid-cols-2 gap-10 justify-between max-w-7xl mx-auto items-center">
-        <div className="bg-white p-8 md:min-h-screen  w-full flex flex-col justify-center ">
-          {/* Left side form */}
-          <h2 className="text-primary  text-3xl font-semibold tracking-tight">
-         Sign In As Doctor
+    <div className="bg-primary min-h-screen">
+      <div className="flex gap-10 justify-center max-w-md m-auto items-center min-h-screen p-5">
+        <div className="bg-white p-8 w-full flex flex-col justify-center rounded">
+          <h2 className="text-primary text-3xl font-semibold tracking-tight">
+            Sign In As Doctor
           </h2>
-          <p className="text-gray-700 ">
+          <p className="text-gray-700">
             Welcome back! Please enter your credentials to continue.
           </p>
-          <form onSubmit={handleSignin} className="mt-16 ">
+          <form onSubmit={handleSignin} className="mt-16">
             <div className="mb-4 flex flex-col gap-y-2">
               <label
                 htmlFor="email"
@@ -47,35 +59,29 @@ export default function DoctorsLogin() {
               >
                 Your Email<span className="text-primary1"> *</span>
               </label>
-
-
               <input
                 name="email"
                 id="email"
-                className="flex border-2 hover:border-primary border-transparent bg-gray-100 outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-primary dark:border-zinc-700 "
+                className="flex border-2 hover:border-primary bg-gray-100 outline-none border-gray-400 w-full rounded-md px-3 py-2 text-sm focus:border-primary dark:border-zinc-700"
                 placeholder="Username"
                 type="email"
                 required
               />
 
               <label
-                htmlFor="email"
+                htmlFor="hospitalId"
                 className="font-medium text-sm tracking-wider"
               >
-               Hospital ID<span className="text-primary1"> *</span>
+                Hospital ID<span className="text-primary1"> *</span>
               </label>
-
               <input
                 name="hospitalId"
                 id="hospitalId"
-                className="flex border-2 hover:border-primary border-transparent bg-gray-100 outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-primary dark:border-zinc-700 "
+                className="flex border-2 hover:border-primary bg-gray-100 outline-none border-gray-400 w-full rounded-md px-3 py-2 text-sm focus:border-primary dark:border-zinc-700"
                 placeholder="Hospital ID"
                 type="text"
                 required
               />
-              
-
-
 
               <label
                 htmlFor="pass"
@@ -86,23 +92,21 @@ export default function DoctorsLogin() {
               <input
                 id="pass"
                 name="pass"
-                className="flex border-2 hover:border-primary border-transparent bg-gray-100 outline-none border-gray-400 w-full rounded-md  px-3 py-2 text-sm focus:border-primary dark:border-zinc-700 "
+                className="flex border-2 hover:border-primary bg-gray-100 outline-none border-gray-400 w-full rounded-md px-3 py-2 text-sm focus:border-primary dark:border-zinc-700"
                 placeholder="Password"
-                type="pass"
+                type="password"
                 required
               />
             </div>
 
             <Button
               type="submit"
-              className="bg-primary w-full font-normal tracking-wider "
+              className="bg-primary w-full font-normal tracking-wider"
             >
-              {loading ? "loading..." : "Continue"}
+              {loading ? "Loading..." : "Continue"}
             </Button>
           </form>
         </div>
-        {/* Right side content */}
-       
       </div>
     </div>
   );
