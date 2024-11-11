@@ -27,10 +27,9 @@ export default function DoctorsLogin() {
         `http://localhost:5000/api/get-all-data/${hospitalId}`
       );
 
-      console.log(response);
       if (response.status === 200 && response.data) {
         // Navigate to the health data page after successful login and data fetch
-        navigate("/user/my-health", { state: { data: response.data } });
+        navigate("/doctors/patients", { state: { data: response.data } });
       } else {
         toast.error("Failed to fetch data from server.");
       }

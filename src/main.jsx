@@ -12,6 +12,8 @@ import DoctorsMonitor from "./Doctors/DoctorsMonitor.jsx";
 import UserLayout from "./Users/UserLayout.jsx";
 import HeathRecords from "./Users/HeathRecords.jsx";
 import DoctorsLogin from "./Authentication/DoctorsLogin.jsx";
+import HospitalPatients from "./Doctors/HospitalPatients.jsx";
+import PatientDetails from "./Doctors/PatientDetails.jsx";
 
 const queryClient = new QueryClient();
 
@@ -45,10 +47,18 @@ const router = createBrowserRouter([
   {
     path: "/doctors",
     element: <DoctorsMonitor />,
+    children: [
+      {
+        path: "patients",
+        element: <HospitalPatients />,
+      },
+      {
+        path: "details", // Changed to relative path
+        element: <PatientDetails />,
+      },
+    ],
   },
 ]);
-
-
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
